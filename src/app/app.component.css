@@ -1,0 +1,22 @@
+.toolbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    align-items: center;
+    background-color: #00857a;
+    color: white;
+    font-weight: 600;
+  }
+  .header-title-text{
+      text-align: center;
+      margin-top: 0.6rem;
+  }
+a{
+    color: white;
+    text-decoration: none;
+}
+a:hover{
+    color: white !important;
+}

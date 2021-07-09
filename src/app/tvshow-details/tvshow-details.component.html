@@ -1,0 +1,22 @@
+<div class="row show-detail-container col-xs-12 col-sm-12 col-md-12">
+    <div class="row show-detail-block col-xs-12 col-sm-12 col-md-6">
+        <img [src]="img" class="show-Img" alt="Avatar">
+    </div>
+    <div class="row show-detail-block col-xs-12 col-sm-12 col-md-6">
+        <div class="show-details">
+            <h4 class="show-name">{{ name }}</h4> 
+            <div class="show-rating"><span><i class="fa fa-star fa-md"></i></span> {{rating}}</div>
+            <div class="btn-group" *ngFor ="let i of genres">
+                <div class="btn btn-genre">{{i}}</div>
+            </div>
+            <div class="show-lang">Language: {{language}}</div>
+            <div class="show-summary">{{ summary }}</div>
+            <!-- <div *ngIf="webchannel" class="webchannel-container">
+                <p>Available on {{webchannel}}</p>
+            </div>
+            <div *ngIf="officialSite" class="webchannel-container">
+                <div class="btn btn-siteView" (click)="navigateToOfficialSite(officialSite)">View on Official Site</div>
+            </div> -->
+        </div>
+    </div>
+</div>

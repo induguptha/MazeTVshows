@@ -1,0 +1,75 @@
+/* Styles for wrapping the search box */
+.main {
+    width: 100%;
+    margin: 60px 0px 20px 0px;
+    overflow: hidden !important;
+}
+.input-group{
+    width: 50% !important;
+    float: left;
+    padding-left: 20px;
+}
+.btn-secondary {
+    background-color:#00857a !important;
+    border-color: #00857a !important;
+}
+input[type="text"]:focus{
+    border-color: #00857a;
+  box-shadow: 0 1px 1px rgba(0, 133, 122, 0.075) inset, 0 0 8px rgba(0, 133, 122, 0.6);
+  outline: 0 none;
+}
+/* Dropdown*/
+.genre-dropdown{
+    margin-left: 50px;
+    padding: 5px;
+    border-radius: 0.267rem;
+  }
+select.genre-dropdown:focus{
+    border-color: #00857a;
+    box-shadow: 0 1px 1px rgba(0, 133, 122, 0.075) inset, 0 0 8px rgba(0, 133, 122, 0.6);
+    outline: 0 none;
+  }
+  .genre-select{
+    justify-content: center;
+    padding-right: 20px;
+    float: right;
+    overflow-x: hidden !important;
+  }
+/* Styles for Show Cards*/
+.card {
+    height: 95%;
+    cursor: pointer !important;
+    padding: 0px 0px 15px;
+    border-radius: 0.7rem;
+    background-color: #00857a;
+  }
+  
+  .card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 133, 122,0.9);
+  }
+  
+  .text-container {
+    padding: 2px 16px;
+    margin-top:10px;
+    color: white;
+  }
+  
+  .showsWrapper{
+    padding-top: 80px;
+    padding: 50px;
+  }
+
+  div.scroll{
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+  
+ .searchcls{
+    width: 25%;
+  }
+  
+  .genreimg{
+    width:100%;
+    border-top-left-radius: 0.7rem;
+    border-top-right-radius: 0.7rem;
+  }  

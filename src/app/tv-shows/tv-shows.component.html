@@ -1,0 +1,27 @@
+<div class="main">
+    <div class="input-group">
+      <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search TV shows"/>
+      <div class="input-group-append">
+        <button class="btn btn-secondary" type="button">
+          <i class="fa fa-search"></i>
+        </button>
+      </div>
+    </div>
+    <div class="genre-select">
+        <select [(ngModel)]="defaultSelectedValue" class="genre-dropdown" (ngModelChange)="onGenreChange($event)" >
+          <option value="" disabled selected id="option">Genre</option>
+          <option *ngFor="let i of genres" [ngValue]="i"> {{i}} </option>
+        </select>
+    </div>
+</div>
+<div class="row showsWrapper">
+    <div class="col-xs-6 col-sm-6 col-md-2" *ngFor="let item of showsRating | filter: searchText">
+         <div class="card" (click)="navigateToShowDetail(item.id)">
+              <img [src]="item.img" alt="Avatar" class="genreimg">
+              <div class="text-container">
+                <h6><b>{{item.name}}</b></h6> 
+                <p><span><i class="fa fa-star fa-md"></i></span> {{item.rating}}</p> 
+              </div>
+         </div>
+    </div>
+</div>
