@@ -20,3 +20,6 @@ steps:
     npm install
     ng build --prod
   displayName: 'npm install and build'
+- script: |
+    mocha test --reporter mocha-junit-reporter
+- script: npm test
