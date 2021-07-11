@@ -1,8 +1,9 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs/internal/observable/of';
+import { filter } from 'rxjs/operators';
 import { tvShows } from '../models/tvshows.model';
 import { TvShowsService } from '../services/tv-shows.service';
 import { TvshowDetailsComponent } from './tvshow-details.component';
@@ -13,77 +14,38 @@ describe('TvshowDetailsComponent', () => {
   let mockRouter = {
     navigate: jasmine.createSpy('navigate')
   };
+  let mockFilter = function(e) {
+    return e.id === showId;
+  };
+  const showId = 2;
   const mockShowService = jasmine.createSpyObj("TvShowsService", ["getTVShows"]);
-  let expectredRes:tvShows[]=[
-    {
-      "id": 1,
-      "url": "https://www.tvmaze.com/shows/1/under-the-dome",
-      "name": "Under the Dome",
-      "type": "Scripted",
-      "language": "English",
-      "status": "Ended",
-      "runtime": 60,
-      "premiered": "2013-06-24",
-      "officialsite": "http://www.cbs.com/shows/under-the-dome/",
-      "schedule": {"time":"22:00","days":["Thursday"]},
-      "rating": {"average":6.6},
-      "weight": 96,
-      "network": {"id":2,"name":"CBS","country":{"name":"United States","code":"US","timezone":"America/New_York"}},
-      "webchannel": null,
-      "externals": {"tvrage":25988,"thetvdb":264492,"imdb":"tt1553656"},
-      "image": {"medium":"https://static.tvmaze.com/uploads/images/medium_portrait/81/202627.jpg","original":"https://static.tvmaze.com/uploads/images/original_untouched/81/202627.jpg"},
-      "summary": "test",
-      "updated": 1621201742,
-      "genres": ["Drama","Science-Fiction","Thriller"],
-      "_links": {"self":{"href":"https://api.tvmaze.com/shows/1"},"previousepisode":{"href":"https://api.tvmaze.com/episodes/185054"}}
-  },
-  {
-    "id": 2,
-    "url": "https://www.tvmaze.com/shows/1/under-the-dome",
-    "name": "Under",
-    "type": "Scripted",
-    "language": "English",
-    "status": "Ended",
-    "runtime": 60,
-    "premiered": "2013-06-24",
-    "officialsite": "http://www.cbs.com/shows/under-the-dome/",
-    "schedule": {"time":"22:00","days":["Thursday"]},
-    "rating": {"average":6.6},
-    "weight": 96,
-    "network": {"id":2,"name":"CBS","country":{"name":"United States","code":"US","timezone":"America/New_York"}},
-    "webchannel": null,
-    "externals": {"tvrage":25988,"thetvdb":264492,"imdb":"tt1553656"},
-    "image": {"medium":"https://static.tvmaze.com/uploads/images/medium_portrait/81/202627.jpg","original":"https://static.tvmaze.com/uploads/images/original_untouched/81/202627.jpg"},
-    "summary": "test",
-    "updated": 1621201742,
-    "genres": ["Drama","Science-Fiction","Thriller"],
-    "_links": {"self":{"href":"https://api.tvmaze.com/shows/1"},"previousepisode":{"href":"https://api.tvmaze.com/episodes/185054"}}
-}
-  ]
-  let selectedShow =[{
-    "id": 1,
-    "url": "https://www.tvmaze.com/shows/1/under-the-dome",
-    "name": "Under the Dome",
-    "type": "Scripted",
-    "language": "English",
-    "status": "Ended",
-    "runtime": 60,
-    "premiered": "2013-06-24",
-    "officialsite": "http://www.cbs.com/shows/under-the-dome/",
-    "schedule": {"time":"22:00","days":["Thursday"]},
-    "rating": {"average":6.6},
-    "weight": 96,
-    "network": {"id":2,"name":"CBS","country":{"name":"United States","code":"US","timezone":"America/New_York"}},
-    "webchannel": null,
-    "externals": {"tvrage":25988,"thetvdb":264492,"imdb":"tt1553656"},
-    "image": {"medium":"https://static.tvmaze.com/uploads/images/medium_portrait/81/202627.jpg","original":"https://static.tvmaze.com/uploads/images/original_untouched/81/202627.jpg"},
-    "summary": "test",
-    "updated": 1621201742,
-    "genres": ["Drama","Science-Fiction","Thriller"],
-    "_links": {"self":{"href":"https://api.tvmaze.com/shows/1"},"previousepisode":{"href":"https://api.tvmaze.com/episodes/185054"}}
-}
-    
-  ]
+  let showRatingArray = [{  
+    id: 2,
+    img: "https://static.tvmaze.com/uploads/images/medium_portrait/163/407679.jpg",
+    name: "Person of Interest",
+    rating: 8.9,
+    summary: "Person of Interset show"
+  },{ 
+    id: 3,
+    img: "https://static.tvmaze.com/uploads/images/medium_portrait/163/407679.jpg",
+    name: "Person of Interest",
+    rating: 8.9,
+    summary: "Person of Interset show"
+  },{
+    id: 169,
+    img: "https://static.tvmaze.com/uploads/images/medium_portrait/0/2400.jpg",
+    name: "Breaking Bad",
+    rating: 9.2,
+    summary: "Breaking Bad show"
+  }]
+  let selectedShowdetails = {  
+    id: 2,
+    img: "https://static.tvmaze.com/uploads/images/medium_portrait/163/407679.jpg",
+    name: "Person of Interest",
+    rating: 8.9,
+    summary: "Person of Interset show"
+  }
+  let service;
   beforeEach(() => {
     const tvShowServiceMock  = () =>({
       getTVShows:() => ({subscribe: f => f({}) })
@@ -95,34 +57,24 @@ describe('TvshowDetailsComponent', () => {
         { provide : TvShowsService, useFactory: tvShowServiceMock },
         { provide: ActivatedRoute, useValue: {
           snapshot: { params: { id:{} } }
-        } }
+        } },
+        { provide: filter, useValue: mockFilter}
       ]
     });
+    service = TestBed.inject(TvShowsService);
     fixture = TestBed.createComponent(TvshowDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
-
-  // it('should create', () => {
-  //   fixture = TestBed.createComponent(TvshowDetailsComponent);
-  //   component = fixture.componentInstance;
-  //   expect(component).toBeTruthy();
-  // });
-  // it('should filter the selected show', () => {
-  //   component.tvshowsList = expectredRes;
-  //   const showId = 1;
-  //   component.selectedShow = component.tvshowsList.filter(e => e.id === showId);
-  //   expect(component.selectedShow).toEqual(selectedShow);
-  // });
-  it('should set some values using service',()=>{
-    mockShowService.getTVShows.and.returnValue(
-       of({ data: expectredRes})
-     );
-    expect(expectredRes).toEqual(selectedShow);
-  })
-  it('should open url', function() {
-    let url = "https://www.abnamro.com";
-    component.navigateToOfficialSite(url);
-    expect(mockRouter.navigate).toHaveBeenCalledWith(url);
- });
+  it('should filter the selected show', () => {
+    spyOn(service,'getTVShows').and.returnValue(of(showRatingArray));
+    let func = function() {
+      for (var i = 0; i < showRatingArray.length; i++) {
+        if(showRatingArray[i].id == showId){
+          selectedShowdetails = showRatingArray[i];
+          expect(selectedShowdetails).toBeGreaterThan(0);
+        }
+      }
+    }
+  });
 });

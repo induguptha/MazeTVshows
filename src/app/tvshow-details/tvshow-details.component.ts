@@ -9,7 +9,7 @@ import { TvShowsService } from '../services/tv-shows.service';
   styleUrls: ['./tvshow-details.component.css']
 })
 export class TvshowDetailsComponent implements OnInit {
-  public tvshowsList:any[] = [];
+  public tvshowsList= [];
   public id;
     public name;
     public summary;
@@ -23,25 +23,23 @@ export class TvshowDetailsComponent implements OnInit {
   constructor(private route: ActivatedRoute, private showService: TvShowsService) { }
   ngOnInit() {
       this.showService.getTVShows().subscribe((response) => {
+        /*Retreiving the response */
           this.tvshowsList = response;
+          /*Getting the show Id using route snapshot */
           const showId = parseInt(this.route.snapshot.params.id, 10);
-           this.selectedShow = this.tvshowsList.filter(e => e.id === showId);
-          this.id = this.selectedShow[0].id;
-          this.name = this.selectedShow[0].name;
-          this.summary = this.selectedShow[0].summary.replace(/(<([^>]+)>)/ig, '');
-          this.img = this.selectedShow[0].image.medium;
-          this.rating = this.selectedShow[0].rating.average;
-          this.language = this.selectedShow[0].language;
-          this.genres = this.selectedShow[0].genres;
-          // if(this.selectedShow[0].webChannel){
-          //   this.webchannel = this.selectedShow[0].webChannel.name;
-          // }
-          // if(this.selectedShow[0].officialSite){
-          //   this.officialSite = this.selectedShow[0].officialSite;
-          // }
+          for (let i = 0; i < this.tvshowsList.length; i++) {
+            if(this.tvshowsList[i].id == showId){
+              this.selectedShow = this.tvshowsList[i];
+              this.id = this.selectedShow.id;
+              this.name = this.selectedShow.name;
+              this.summary = this.selectedShow.summary.replace(/(<([^>]+)>)/ig, '');
+              this.img = this.selectedShow.image.medium;
+              this.rating = this.selectedShow.rating.average;
+              this.language = this.selectedShow.language;
+              this.genres = this.selectedShow.genres;  
+            }
+          }
+         
       })
-  }
-  navigateToOfficialSite(url: string){
-        window.open(url,"\blank");
   }
 }
