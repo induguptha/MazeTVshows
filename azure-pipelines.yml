@@ -25,4 +25,4 @@ steps:
   inputs:
     CopyRoot: 'dist'
     ArtifactName: 'Publish artifact'
-    ArtifactType: 'FilePath'
+    ArtifactType: 'Container'
