@@ -7,11 +7,13 @@
 trigger:
 - main
 
+pool:
+  vmImage: ubuntu-latest
+
 steps:
 - task: NodeTool@0
   inputs:
     versionSpec: '14.x'
-  displayName: 'Install Node.js'
 
 - script: |
     npm install -g @angular/cli
@@ -24,4 +26,12 @@ steps:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Free Trial (d110f098-0671-436b-b595-5111394da8f8)'
+    appType: 'webApp'
+    WebAppName: 'tvShowsmaze'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+  displayName: 'Deploy'
 
