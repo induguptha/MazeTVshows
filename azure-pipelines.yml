@@ -32,6 +32,6 @@ steps:
     azureSubscription: 'Free Trial (d110f098-0671-436b-b595-5111394da8f8)'
     appType: 'webApp'
     WebAppName: 'tvShowsmaze'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/induguptha.MazeTVshows'
   displayName: 'Deploy'
 
