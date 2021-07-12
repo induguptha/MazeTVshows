@@ -20,5 +20,3 @@ steps:
     npm install
     ng build --prod
   displayName: 'npm install and build'
-- script: |
-    ng test --code-coverage
